@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+<h2>wanna update something?</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update</button>
+
+</form>
+</div>
+    <a href="{% url 'delete' wall.id %}" class="btn btn-danger">Delete?</a>
+
+
+{% endblock %}
