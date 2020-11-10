@@ -4,8 +4,14 @@
 <h2> Hey! Add video</h2>
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-
+    {% load widget_tweaks %}
+    {% for field in form %}
+        <div class="form-group {% if field.errors %} alert alert-danger {% endif %}" >
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% render_field field class="form-control" %}
+        </div>
+    {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>
@@ -16,8 +22,14 @@
 
 <form method="POST">
     {% csrf_token %}
-    {{ sform.as_p }}
-
+        {% load widget_tweaks %}
+{% for field in sform %}
+        <div class="form-group {% if field.errors %} alert alert-danger {% endif %}" >
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% render_field field class="form-control" %}
+        </div>
+    {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>
