@@ -56,5 +56,3 @@ class Deletewall(generic.DeleteView):
     model = wall
     template_name = 'videoshandler/deletewall.html'
     success_url = reverse_lazy('dashboard')
-
-
