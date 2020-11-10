@@ -4,6 +4,7 @@ from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from .models import wall, Videos
 from django.contrib.auth import authenticate, login
+from .forms import VideosForm, SearchForm
 
 
 # Create your views here.
@@ -13,6 +14,29 @@ def index(request):
 
 def dashboard(request):
     return render(request, 'videoshandler/dashboard.html')
+
+
+def add_video(request, pk):
+    form = VideosForm()
+    sform = SearchForm()
+
+    context = {
+        'form': form,
+        'sform': sform
+
+    }
+    if request.method == 'POST':
+        filled_form = VideosForm(request.POST)
+        if filled_form.is_valid():
+            video = Videos()
+            video.wall = wall.objects.filter(pk=pk).first()
+            video.title = filled_form.cleaned_data['title']
+            video.url = filled_form.cleaned_data['url']
+            video.youtube = filled_form.cleaned_data['youtube']
+            video.save()
+            return redirect('dashboard')
+
+    return render(request, 'videoshandler/add_video.html', context=context)
 
 
 class Signup(generic.CreateView):
