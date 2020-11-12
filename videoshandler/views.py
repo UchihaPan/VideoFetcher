@@ -27,11 +27,11 @@ def search(request):
     if search_form.is_valid():
         ans = urllib.parse.quote(search_form.cleaned_data['search'])
         response = requests.get(
-            f'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=4&q={ans}&key={YOUTUBEAPIKEY}')
+            f'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={ans}&key={YOUTUBEAPIKEY}')
         return JsonResponse(
             response.json())
     return JsonResponse({
-        'error': 'Sorry Not Working!'
+        'error': 'Sorry Somrthing Bad happens its Not Working!'
     })
 
 
