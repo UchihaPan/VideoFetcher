@@ -1,6 +1,6 @@
 from django.contrib.auth import views
 from django.urls import path
-from .views import index, Signup, Createwall, Deletewall, Detailwall, Updatewall, dashboard,add_video
+from .views import index, Signup, Createwall, Deletewall, Detailwall, Updatewall, dashboard,add_video,search
 
 urlpatterns = [
     path('', index, name='index'),
@@ -9,9 +9,10 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('dashboard/', dashboard, name='dashboard'),
     path('create/', Createwall.as_view(), name='create'),
-    path('wally/<int:pk>/', Detailwall.as_view(), name='detail'),
-    path('wally/<int:pk>/update', Updatewall.as_view(), name='update'),
-    path('wally/<int:pk>/delete', Deletewall.as_view(), name='delete'),
-    path('wally/<int:pk>/add', add_video, name='add_video'),
+    path('detail/<int:pk>/', Detailwall.as_view(), name='detail'),
+    path('update/<int:pk>/', Updatewall.as_view(), name='update'),
+    path('delete/<int:pk>/', Deletewall.as_view(), name='delete'),
+    path('add/<int:pk>/', add_video, name='add'),
+    path('search/', search, name='search'),
 
 ]

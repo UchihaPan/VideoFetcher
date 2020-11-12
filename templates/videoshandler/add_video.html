@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<h2> Hey! Add video</h2>
+<h2> Hey! Add video to the {{ wallm.title }}</h2>
 <form method="POST">
     {% csrf_token %}
     {% load widget_tweaks %}
@@ -30,8 +30,36 @@
         {% render_field field class="form-control" %}
         </div>
     {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
 
 </form>
+<div id="search"></div>
+<script>
+    var timer;
+    $('#id_search').keyup(function () {
+        clearTimeout(timer);
+        $('#search').text("working on it ...");
+        delay=setTimeout(function () {
+            var text=$('#id_search').val();
+            $.ajax({
+                url :'/search/',
+                data:{
+                    'search':text
+                },
+                dataType:'json',
+                success:function (data) {
+                    var results='';
+                    $('#search').text('');
+                    data['items'].forEach(function (video) {
+                        results+=video['snippet']['title']
+
+                    });
+                    $('#search').append(results);
+
+                }
+            } );
+
+        },1000);
+    });
+</script>
 </div>
 {% endblock %}

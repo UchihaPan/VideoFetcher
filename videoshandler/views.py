@@ -5,9 +5,14 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import wall, Videos
 from django.contrib.auth import authenticate, login
 from .forms import VideosForm, SearchForm
+import urllib
+import requests
+from django.http import Http404, JsonResponse
+from django.forms.utils import ErrorList
+
+YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
 
 
-# Create your views here.
 def index(request):
     return render(request, 'videoshandler/index.html')
 
@@ -16,26 +21,60 @@ def dashboard(request):
     return render(request, 'videoshandler/dashboard.html')
 
 
+def search(request):
+    search_form = SearchForm(request.GET)
+
+    if search_form.is_valid():
+        ans = urllib.parse.quote(search_form.cleaned_data['search'])
+        response = requests.get(
+            f'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=4&q={ans}&key={YOUTUBEAPIKEY}')
+        return JsonResponse(
+            response.json())
+    return JsonResponse({
+        'error': 'Sorry Not Working!'
+    })
+
+
 def add_video(request, pk):
     form = VideosForm()
     sform = SearchForm()
 
-    context = {
-        'form': form,
-        'sform': sform
+    wallm = wall.objects.get(pk=pk)
+    if request.user != wallm.user:
+        raise Http404
 
-    }
     if request.method == 'POST':
-        filled_form = VideosForm(request.POST)
+        filled_form = VideosForm(request.POST or None)
         if filled_form.is_valid():
             video = Videos()
-            video.wall = wall.objects.filter(pk=pk).first()
-            video.title = filled_form.cleaned_data['title']
+            video.wall = wallm
             video.url = filled_form.cleaned_data['url']
-            video.youtube = filled_form.cleaned_data['youtube']
-            video.save()
-            return redirect('dashboard')
+            parsed_url = urllib.parse.urlparse(video.url)
+            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
+            if video_id:
 
+                video.youtube = video_id[0]
+                response = requests.get(
+                    f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={YOUTUBEAPIKEY}')
+                json = response.json()
+                title = json['items'][0]['snippet']['title']
+                print(title)
+                video.title = title
+
+                video.save()
+                return redirect('detail', pk)
+
+
+            else:
+                errors = form.errors.setdefault('url', ErrorList())
+                errors.append('please enter correct url')
+
+    context = {
+        'form': form,
+        'sform': sform,
+        'wallm': wallm
+
+    }
     return render(request, 'videoshandler/add_video.html', context=context)
 
 
