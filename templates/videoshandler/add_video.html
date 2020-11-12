@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
 <h2> Hey! Add Videos to the {{ wallm.title }}</h2>
-<form method="POST">
+<form method="POST" id="svideo">
     {% csrf_token %}
     {% load widget_tweaks %}
     {% for field in form %}
@@ -38,7 +38,7 @@
     $('#id_search').keyup(function () {
         clearTimeout(timer);
         $('#search').text("working on it ...");
-        delay=setTimeout(function () {
+         delay=setTimeout(function () {
             var text=$('#id_search').val();
             $.ajax({
                 url :'/search/',
@@ -46,24 +46,29 @@
                     'search':text
                 },
                 dataType:'json',
-                success:function (data) {
-                    var results='';
-                    $('#search').text('');
-                    results+='<div class="row">'
-                    data['items'].forEach(function (video) {
-                        results+='<div class="col-md-4 mt-3"><div class="card md-4 shadow-sm">';
-                        results+='<iframe width="100%" height="225" src="https://www.youtube.com/embed/'+video['id']['videoId']+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
-                        results+='</div></div>'
+                 success: function(data) {
+            var results = '';
+            $('#search').text('');
+            results += '<div class="row">';
+            data['items'].forEach(function(video) {
+              results += '<div class="col-md-4 mt-3"><div class="card mb-4 shadow-sm">';
+              results += '<iframe width="100%" height="225" src="https://www.youtube.com/embed/' + video['id']['videoId'] +
+                '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+              results += '<div class="card-body"><p class="card-text">' + video['snippet']['title'] + '</p>';
+              results += '<a href="#" class="btn btn-primary" onclick="addvideo(' + video['id']['videoId'] + ')">Add Video</a></div></div></div>';
 
-                    });
-                   results+='</div>'
-                    $('#search').append(results);
-
-                }
-            } );
-
-        },1000);
+            });
+            results += '</div>';
+            $('#search').append(results);
+          }
+        });
+      }, 1000);
     });
+function addvideo(id) {
+    $('#id_url').val("https://www.youtube.com/watch?v="+id);
+    $('#svideo').submit();
+
+}
 </script>
 </div>
 {% endblock %}

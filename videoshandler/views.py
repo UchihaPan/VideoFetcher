@@ -10,7 +10,8 @@ import requests
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
 
-YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
+#YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
+YOUTUBEAPIKEY='AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
 
 
 def index(request):
@@ -23,16 +24,13 @@ def dashboard(request):
 
 def search(request):
     search_form = SearchForm(request.GET)
-
     if search_form.is_valid():
-        ans = urllib.parse.quote(search_form.cleaned_data['search'])
-        response = requests.get(
-            f'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={ans}&key={YOUTUBEAPIKEY}')
-        return JsonResponse(
-            response.json())
-    return JsonResponse({
-        'error': 'Sorry Somrthing Bad happens its Not Working!'
-    })
+        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search'])
+        response = requests.get(f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={ encoded_search_term }&key={ YOUTUBEAPIKEY }')
+        return JsonResponse(response.json())
+    return JsonResponse(
+        {'error':'Something is Wrong'}
+    )
 
 
 def add_video(request, pk):
