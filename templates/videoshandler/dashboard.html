@@ -1,8 +1,35 @@
+
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<h2>Dashboard</h2>
+  <div class="text-center">
+    <h1>{{ user.username }}'s PlayLists!</h1>
+    <a href="{% url 'create' %}" class="btn btn-primary">Create New PlayLists!!</a>
+  </div>
+
+    {% for hall in users_hall %}
+
+<h2><a href="{% url 'detail' hall.id %}">{{ hall.title }}</a></h2>
+<a href="{% url 'add' hall.id %}" class="btn btn-primary">Add Video</a>
+<a href="{% url 'update' hall.id %}" class="btn btn-warning">Edit</a>
+ <a href="{% url 'delete' hall.id %}" class="btn btn-danger">Delete</a>
+
+
+    <div class="row">
+      {% for content in hall.videos_set.all %}
+      <div class="col-md-4 mt-3">
+        <div class="card mb-4 shadow-sm">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ content.youtube }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="card-body">
+            <p class="card-text">{{ content.title }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+
+
+    {% endfor %}
+
 </div>
-
-
 {% endblock %}

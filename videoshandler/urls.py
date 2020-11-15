@@ -12,7 +12,7 @@ urlpatterns = [
     path('detail/<int:pk>/', Detailwall.as_view(), name='detail'),
     path('update/<int:pk>/', Updatewall.as_view(), name='update'),
     path('delete/<int:pk>/', Deletewall.as_view(), name='delete'),
-    path('deletevideo/<int:pk>/delete', Deletevideo.as_view(), name='deletevideo'),
+    path('deletevideo/<int:pk>/', Deletevideo.as_view(), name='deletevideo'),
 
     path('add/<int:pk>/', add_video, name='add'),
     path('search/', search, name='search'),

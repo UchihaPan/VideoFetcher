@@ -10,10 +10,10 @@ import requests
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
 
-#YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
-#YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
+# YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
+# YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
 # YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
-YOUTUBEAPIKEY='AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
+YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 
 
 def index(request):
@@ -21,7 +21,11 @@ def index(request):
 
 
 def dashboard(request):
-    return render(request, 'videoshandler/dashboard.html')
+    users_hall = wall.objects.filter(user=request.user)
+    context = {
+        'users_hall': users_hall
+    }
+    return render(request, 'videoshandler/dashboard.html', context)
 
 
 def search(request):
@@ -55,14 +59,14 @@ def add_video(request, pk):
             if video_id:
 
                 video.youtube = video_id[0]
-                response = requests.get(f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={YOUTUBEAPIKEY}')
+                response = requests.get(
+                    f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={YOUTUBEAPIKEY}')
                 json = response.json()
                 title1 = json['items'][0]['snippet']['title']
                 video.title = title1
 
                 video.save()
                 return redirect('detail', pk)
-
 
             else:
                 errors = form.errors.setdefault('url', ErrorList())
