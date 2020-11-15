@@ -10,9 +10,10 @@ import requests
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
 
-# YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
-# YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
-YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
+#YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
+#YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
+# YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
+YOUTUBEAPIKEY='AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 
 
 def index(request):
@@ -26,9 +27,9 @@ def dashboard(request):
 def search(request):
     search_form = SearchForm(request.GET)
     if search_form.is_valid():
-        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search'])
+        search_term = urllib.parse.quote(search_form.cleaned_data['search'])
         response = requests.get(
-            f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={encoded_search_term}&key={YOUTUBEAPIKEY}')
+            f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={search_term}&key={YOUTUBEAPIKEY}')
         return JsonResponse(response.json())
     return JsonResponse(
         {'error': 'Something is Wrong'}
@@ -54,12 +55,10 @@ def add_video(request, pk):
             if video_id:
 
                 video.youtube = video_id[0]
-                response = requests.get(
-                    f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={YOUTUBEAPIKEY}')
+                response = requests.get(f'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={YOUTUBEAPIKEY}')
                 json = response.json()
-                title = json['items'][0]['snippet']['title']
-                print(title)
-                video.title = title
+                title1 = json['items'][0]['snippet']['title']
+                video.title = title1
 
                 video.save()
                 return redirect('detail', pk)
@@ -118,4 +117,10 @@ class Detailwall(generic.DetailView):
 class Deletewall(generic.DeleteView):
     model = wall
     template_name = 'videoshandler/deletewall.html'
+    success_url = reverse_lazy('dashboard')
+
+
+class Deletevideo(generic.DeleteView):
+    model = Videos
+    template_name = 'videoshandler/deletevideo.html'
     success_url = reverse_lazy('dashboard')

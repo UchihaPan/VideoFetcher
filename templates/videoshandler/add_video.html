@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<h2> Hey! Add Videos to the {{ wallm.title }}</h2>
+<h2>  Hey There {{ wallm.user }}</h2>
+<h2>  Add Videos to the {{ wallm.title }}</h2>
 <form method="POST" id="svideo">
     {% csrf_token %}
     {% load widget_tweaks %}
