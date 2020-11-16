@@ -1,6 +1,6 @@
 # VideoFetcher
 
-A Web App Using Django 
+A Web App Using Django .
 
 An user could add his own playlists .
 Added Authentication .
