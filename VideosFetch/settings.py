@@ -25,8 +25,7 @@ SECRET_KEY = '&0%pu)=h!v&t8dbo3v1=suue1+)9@_0z9+t#g+$r21haj%izt3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['stark-peak-96413.herokuapp.com','panky3000.com','www.panky3000.com']
-
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'videoshandler',
     'widget_tweaks',
+ 'whitenoise.runserver_nostatic',
 
 ]
 
@@ -70,6 +70,7 @@ TEMPLATES = [
         },
     },
 ]
+WHITENOISE_USE_FINDERS = True
 
 WSGI_APPLICATION = 'VideosFetch.wsgi.application'
 
@@ -77,9 +78,15 @@ WSGI_APPLICATION = 'VideosFetch.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'videofetcher',
+        'USER': 'postgres',
+        'PASSWORD': 12345
+    }
 }
-
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -122,7 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'videoshandler/static')
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressManifestStaticFileStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
