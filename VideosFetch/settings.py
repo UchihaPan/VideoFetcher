@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,12 +76,7 @@ WSGI_APPLICATION = 'VideosFetch.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'videofetcher',
-        'USER': 'postgres',
-        'PASSWORD': 12345
-    }
+    'default': dj_database_url.config()
 }
 
 # Password validation
@@ -125,5 +121,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'videoshandler/static')
 ]
+STATICFILES_STORAGE='whitenoise.storage.CompressManifestStaticFileStorage'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
