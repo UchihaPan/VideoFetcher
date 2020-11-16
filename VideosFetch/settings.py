@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '&0%pu)=h!v&t8dbo3v1=suue1+)9@_0z9+t#g+$r21haj%izt3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://git.heroku.com/stark-peak-96413.git','playlists.com']
 
 # Application definition
 
