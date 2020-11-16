@@ -9,6 +9,8 @@ import urllib
 import requests
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
 # YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
@@ -17,14 +19,15 @@ YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 
 
 def index(request):
-    recent=wall.objects.all().order_by('-id')
+    recent = wall.objects.all().order_by('-id')
 
-    context={
-        'recent':recent
+    context = {
+        'recent': recent
     }
-    return render(request, 'videoshandler/index.html',context)
+    return render(request, 'videoshandler/index.html', context)
 
 
+@login_required
 def dashboard(request):
     users_hall = wall.objects.filter(user=request.user)
     context = {
@@ -33,6 +36,7 @@ def dashboard(request):
     return render(request, 'videoshandler/dashboard.html', context)
 
 
+@login_required
 def search(request):
     search_form = SearchForm(request.GET)
     if search_form.is_valid():
@@ -45,6 +49,7 @@ def search(request):
     )
 
 
+@login_required
 def add_video(request, pk):
     form = VideosForm()
     sform = SearchForm()
@@ -99,7 +104,7 @@ class Signup(generic.CreateView):
         return view
 
 
-class Createwall(generic.CreateView):
+class Createwall(LoginRequiredMixin, generic.CreateView):
     model = wall
     fields = ['title']
     template_name = 'videoshandler/createwall.html'
@@ -111,11 +116,17 @@ class Createwall(generic.CreateView):
         return redirect('dashboard')
 
 
-class Updatewall(generic.UpdateView):
+class Updatewall(LoginRequiredMixin, generic.UpdateView):
     model = wall
     fields = ['title']
     template_name = 'videoshandler/updatewall.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self, queryset=None):
+        video = super(Updatewall, self).get_object()
+        if not video.user == self.request.user:
+            raise Http404
+        return video
 
 
 class Detailwall(generic.DetailView):
@@ -123,13 +134,25 @@ class Detailwall(generic.DetailView):
     template_name = 'videoshandler/detailwall.html'
 
 
-class Deletewall(generic.DeleteView):
+class Deletewall(LoginRequiredMixin, generic.DeleteView):
     model = wall
     template_name = 'videoshandler/deletewall.html'
     success_url = reverse_lazy('dashboard')
 
+    def get_object(self, queryset=None):
+        deleteview = super(Deletewall, self).get_object()
+        if not deleteview.user == self.request.user:
+            raise Http404
+        return deleteview
 
-class Deletevideo(generic.DeleteView):
+
+class Deletevideo(LoginRequiredMixin, generic.DeleteView):
     model = Videos
     template_name = 'videoshandler/deletevideo.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self, queryset=None):
+        deletevideo = super(Deletevideo, self).get_object()
+        if not deletevideo.user == self.request.user:
+            raise Http404
+        return deletevideo
