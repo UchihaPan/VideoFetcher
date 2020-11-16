@@ -12,8 +12,8 @@ from django.forms.utils import ErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
-YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
+YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
+#YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
 #YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
 #YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 

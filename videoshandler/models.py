@@ -11,6 +11,7 @@ class wall(models.Model):
         return '{} {}'.format(self.title, self.id)
 
 
+
 class Videos(models.Model):
     wall = models.ForeignKey(wall, on_delete=models.CASCADE)
     title = models.CharField(max_length=20000)
