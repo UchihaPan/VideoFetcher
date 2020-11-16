@@ -25,7 +25,7 @@ SECRET_KEY = '&0%pu)=h!v&t8dbo3v1=suue1+)9@_0z9+t#g+$r21haj%izt3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://git.heroku.com/stark-peak-96413.git','playlists.com']
+ALLOWED_HOSTS = ['stark-peak-96413.herokuapp.com','panky3000.com','www.panky3000.com']
 
 # Application definition
 

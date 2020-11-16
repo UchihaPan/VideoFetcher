@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web:gunicorn VideosFetch.wsgi
+web: gunicorn VideosFetch.wsgi
