@@ -15,9 +15,7 @@
 
 {% if user.id == wall.user.id %}
  <a href="{% url 'add' wall.id %}" class="btn btn-primary">Add Video</a>
-<a href="{% url 'update' wall.id %}" class="btn btn-warning">Edit</a>
 
-<a href="{% url 'delete' wall.id %}" class="btn btn-danger">Delete</a>
 {% endif %}
 
     <div class="row">
