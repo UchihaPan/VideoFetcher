@@ -11,11 +11,19 @@ from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+import random
 
-YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
-#YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
-#YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
-#YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
+
+# YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
+# YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
+# YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
+def randomyoutube():
+    youtube = ['AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4', 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ','AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y', 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc','AIzaSyBlsAznmEevlzTvuRoBURCyUC8axgraS-g']
+    n = random.randint(0, 4)
+    return youtube[4]
+
+
+YOUTUBEAPIKEY = randomyoutube()
 
 
 def index(request):
