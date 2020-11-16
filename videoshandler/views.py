@@ -14,8 +14,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # YOUTUBEAPIKEY = 'AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4'
 # YOUTUBEAPIKEY = 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ'
-# YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
-YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
+YOUTUBEAPIKEY = 'AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y'
+#YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 
 
 def index(request):
@@ -59,11 +59,11 @@ def add_video(request, pk):
         raise Http404
 
     if request.method == 'POST':
-        filled_form = VideosForm(request.POST or None)
-        if filled_form.is_valid():
+        form = VideosForm(request.POST or None)
+        if form.is_valid():
             video = Videos()
             video.wall = wallm
-            video.url = filled_form.cleaned_data['url']
+            video.url = form.cleaned_data['url']
             parsed_url = urllib.parse.urlparse(video.url)
             video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
             if video_id:
@@ -153,6 +153,6 @@ class Deletevideo(LoginRequiredMixin, generic.DeleteView):
 
     def get_object(self, queryset=None):
         deletevideo = super(Deletevideo, self).get_object()
-        if not deletevideo.user == self.request.user:
+        if not deletevideo.wall.user == self.request.user:
             raise Http404
         return deletevideo
