@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<h2> Hey! Create your own playlists!</h2>
+    <h2> Hey! {{ wall.user }}</h2>
+    <h2>Create your own playlists!</h2>
 <form method="POST">
     {% csrf_token %}
     {% load widget_tweaks %}
@@ -10,6 +11,8 @@
         {{ field.errors }}
         {{ field.label_tag }}
         {% render_field field class="form-control" %}
+    <small  class="form-text text-muted">Enter the Title of the new playlist.</small>
+
         </div>
     {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>

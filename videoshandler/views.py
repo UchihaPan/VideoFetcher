@@ -17,7 +17,12 @@ YOUTUBEAPIKEY = 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc'
 
 
 def index(request):
-    return render(request, 'videoshandler/index.html')
+    recent=wall.objects.all().order_by('-id')
+
+    context={
+        'recent':recent
+    }
+    return render(request, 'videoshandler/index.html',context)
 
 
 def dashboard(request):

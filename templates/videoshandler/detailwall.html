@@ -2,8 +2,16 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<h1>{{ hall.title }}</h1>
-<h4 class="text-muted">{{ wall.user.username }}</h4>
+<h1>{{ wall.title }}</h1>
+{% if user.id == wall.user.id %}
+<h4 class="text-muted">Hello {{ wall.user }}!</h4>
+<h4 class="lead">Try to mess with your  {{ wall.title }} PlayList!!</h4>
+    {% else %}
+    <h4 class="lead text-muted">Created By- {{ wall.user }}!</h4>
+
+{% endif %}
+
+
 
 {% if user.id == wall.user.id %}
  <a href="{% url 'add' wall.id %}" class="btn btn-primary">Add Video</a>

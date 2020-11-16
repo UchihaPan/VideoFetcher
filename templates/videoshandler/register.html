@@ -1,14 +1,22 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container">
-<form method="POST">
+  <h2 class="text-center">SignUp Now!!</h2>
+  <form method="POST">
+      {% load widget_tweaks %}
     {% csrf_token %}
-    {{ form.as_p }}
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-
-</form>
+    {% if form.non_field_errors %}<div class="alert alert-warning">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {% render_field field class="form-control" %}
+      {% if field.help_text %}<small class="lead">{{ field.help_text|safe }}</small>{% endif %}
+    </div>
+    {% endfor %}
+  <div class="col-md-12 text-center">
+    <button type="submit" class="btn btn-primary center">SignUp</button>
+  </div>
+  </form>
 </div>
-
-
 {% endblock %}
