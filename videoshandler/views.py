@@ -20,14 +20,15 @@ import random
 def randomyoutube():
     youtube = ['AIzaSyDbr2kBRaRbnGwUw49pcmA7g2O_8UOjUW4', 'AIzaSyAhNdnruZNxgWsqVNeecrLTzQZz4IQUYYQ','AIzaSyD9zBjS0uWDQ5u9QvN0rTaWCb6H6l45e3Y', 'AIzaSyDp_RN6UCYMeyRs_QS-NuIdsu4lkcmgSRc','AIzaSyBlsAznmEevlzTvuRoBURCyUC8axgraS-g']
     n = random.randint(0, 4)
-    return youtube[4]
+    return youtube[n]
 
 
 YOUTUBEAPIKEY = randomyoutube()
+print(YOUTUBEAPIKEY)
 
 
 def index(request):
-    recent = wall.objects.all().order_by('-id')
+    recent = wall.objects.all().order_by('-id')[:3]
 
     context = {
         'recent': recent
