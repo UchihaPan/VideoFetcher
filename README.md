@@ -11,3 +11,5 @@ To Use this project please install the following libraries..
 #pip install psycopg2-binary
 #pip install django-widget-tweaks
 
+Deployed on heroku -https://pankajuchiha.herokuapp.com/
+
